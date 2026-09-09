@@ -1,7 +1,7 @@
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
-
+import { dbConnection } from "./db/connection.js";
 dotenv.config();
 
 const app = express();
@@ -20,9 +20,12 @@ app.use((req, res) => {
   });
 });
 
+const startServer = async () => {
+  await dbConnection();
 
   app.listen(PORT, () => {
-    console.log('Servidor iniciado en http://localhost:${PORT}');
+    console.log(`Servidor iniciado en http://localhost:${PORT}`);
   });
+};
 
 startServer();
