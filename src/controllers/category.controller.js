@@ -1,6 +1,6 @@
 import { randomUUID } from "crypto";
 import { pool } from "../db/connection.js";
-import { categoryDecorator } from "../decorators/category.decorator.js";
+import { categoryDecorator,categoriesListDecorator } from "../decorators/category.decorator.js";
 
 export const index = async (req, res) => {
   try {
@@ -27,7 +27,7 @@ export const store = async (req, res) => {
 
     const id = randomUUID();
 
-    const [result] = await pool.query(
+   await pool.query(
       'INSERT INTO categories (id, name, user_id) VALUES (?, ?, ?)',
       [id, name, user_id]
     );
