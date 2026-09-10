@@ -2,6 +2,7 @@ import { randomUUID } from "crypto";
 import { pool } from "../db/connection.js";
 import { categoryDecorator,categoriesListDecorator } from "../decorators/category.decorator.js";
 
+
 export const index = async (req, res) => {
   try {
     const [rows] = await pool.query
@@ -84,10 +85,6 @@ export const update = async (req, res) => {
   try {
     const { id } = req.params;
     const { name } = req.body;
-
-    if (!isValidId(id)) {
-      return res.status(400).json({ message: 'Identificador de categoría no válido' });
-    }
 
     if (!name) {
       return res.status(400).json({ message: 'Nombre obligatorio' });
