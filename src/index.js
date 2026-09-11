@@ -5,6 +5,7 @@ import { dbConnection } from "./db/connection.js";
 import userRoutes from "./routes/user.routes.js";
 import categoryRoutes from "./routes/category.routes.js";
 import tagRoutes from "./routes/tag.routes.js"
+import taskRoutes from "./routes/task.routes.js"
 dotenv.config();
 
 const app = express();
@@ -18,7 +19,9 @@ app.get("/", (req, res) => {
 
 app.use("/users", userRoutes);
 app.use("/categories", categoryRoutes);
-app.use("tags",tagRoutes)
+app.use("/tags",tagRoutes)
+app.use("/tasks",taskRoutes)
+
 app.use((req, res) => {
   res.status(404).json({
     error: "NOT FOUND",
@@ -30,7 +33,7 @@ const startServer = async () => {
   await dbConnection();
 
   app.listen(PORT, () => {
-    console.log(`Servidor iniciado en http://localhost:${PORT}`);
+    console.log('Servidor iniciado en http://localhost:${PORT}');
   });
 };
 
