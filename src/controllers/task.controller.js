@@ -194,7 +194,6 @@ export const destroy = async (req, res) => {
     const [categoryRows] = await pool.query('SELECT * FROM categories WHERE id = ?', [task.category_id]);
     const tags = await getTaskTags(id);
     const deletedTaskData = taskDecorator(task, categoryRows[0] || null, tags);
-    await pool.query('DELETE FROM tags_task WHERE task_id = ?', [id]);
     await pool.query('DELETE FROM tasks WHERE id = ?', [id]);
 
     return res.status(200).json({
