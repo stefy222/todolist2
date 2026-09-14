@@ -12,6 +12,12 @@ export const createUser = async (req, res) => {
       });
     }
 
+    if (password.length<8){
+      return res.status(400).json({
+        message: "La contraseña debe tener al menos 8 caracteres"
+      });
+    }
+
     const [existingUser] = await pool.query(
       "SELECT id FROM users WHERE email = ?",
       [email]
@@ -33,13 +39,17 @@ export const createUser = async (req, res) => {
       [id, name, email, hashedPassword]
     );
 
+    const userDecorator = (user)=>{
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email
+      };
+    }
+
     res.status(201).json({
       message: "Usuario creado correctamente",
-      user: {
-        id,
-        name,
-        email
-      }
+      user: userDecorator(user)
     });
 
   } catch (error) {
