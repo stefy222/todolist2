@@ -121,3 +121,33 @@ export const login = async (req, res) => {
     });
   }
 };
+
+export const getProfile = async (req, res) => {
+  try {
+    const userId = req.user.user ? req.user.user.id : req.user.id;
+
+    const [users] = await pool.query(
+      `SELECT id, name, email
+       FROM users
+       WHERE id = ?`,
+      [userId]
+    );
+
+    if (users.length === 0) {
+      return res.status(404).json({
+        message: "Usuario no encontrado"
+      });
+    }
+
+    res.status(200).json({
+      user: userDecorator(users[0])
+    });
+
+  } catch (error) {
+    console.error("Error al obtener perfil:", error);
+
+    res.status(500).json({
+      message: "Error interno del servidor"
+    });
+  }
+};
