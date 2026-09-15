@@ -3,14 +3,14 @@ import express from "express";
 import {index,store,show,update,destroy } from "../controllers/category.controller.js";
 
 const router = express.Router();
-router.post("/categories",index)
+router.post("/",index)
 
-router.post("/categories",store);
+router.post("/",store);
 
-router.get("/categories",show);
+router.get("/",show);
 
-router.put("/categories/:id", update);
+router.put("/:id", update);
 
-router.delete("/categories/:id", destroy);
+router.delete("/:id", destroy);
 
 export default router;

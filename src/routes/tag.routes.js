@@ -3,14 +3,14 @@ import express from "express";
 import {index,store,show,update,destroy } from "../controllers/tag.controller.js";
 
 const router = express.Router();
-router.post("/tags",index)
+router.post("/",index)
 
-router.post("/tags",store);
+router.post("/",store);
 
-router.get("/tags",show);
+router.get("/",show);
 
-router.put("/tags/:id", update);
+router.put("/:id", update);
 
-router.delete("/tags/:id", destroy);
+router.delete("/:id", destroy);
 
 export default router;

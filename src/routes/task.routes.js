@@ -3,14 +3,14 @@ import express from "express";
 import {index,store,show,update,destroy } from "../controllers/task.controller.js";
 
 const router = express.Router();
-router.post("/task",index)
+router.post("/",index)
 
-router.post("/task",store);
+router.post("/",store);
 
-router.get("/task",show);
+router.get("/",show);
 
-router.put("/task/:id", update);
+router.put("/:id", update);
 
-router.delete("/task/:id", destroy);
+router.delete("/:id", destroy);
 
 export default router;

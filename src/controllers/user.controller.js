@@ -41,13 +41,17 @@ export const createUser = async (req, res) => {
       [id, name, email, hashedPassword]
     );
 
+    const userDecorator = (user)=>{
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email
+      };
+    }
+
     res.status(201).json({
       message: "Usuario creado correctamente",
-      user: userDecorator({
-        id,
-        name,
-        email
-      })
+      user: userDecorator(user)
     });
 
   } catch (error) {
@@ -67,6 +71,12 @@ export const login = async (req, res) => {
     if (!email || !password) {
       return res.status(400).json({
         message: "El correo y la contraseña son obligatorios"
+      });
+    }
+    
+    if(!isValidEmail(email)){
+      return res.status(400).json({
+        message: "El correo electrónico no es válido"
       });
     }
 
