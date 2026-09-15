@@ -3,8 +3,4 @@ export const isValidId = (id) => typeof id === 'string' && id.trim().length === 
 export const isValidEmail = (email) => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email);
-<<<<<<< HEAD
 };
-=======
-};
->>>>>>> origin/main

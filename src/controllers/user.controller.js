@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 import { randomUUID } from "crypto";
 import { pool } from "../db/connection.js";
 import { userDecorator } from "../decorators/user.decorator.js";
+import { isValidEmail } from "../utils/validators.js";
 
 export const createUser = async (req, res) => {
   try {
@@ -41,15 +42,6 @@ export const createUser = async (req, res) => {
       [id, name, email, hashedPassword]
     );
 
-<<<<<<< HEAD
-    res.status(201).json({
-      message: "Usuario creado correctamente",
-      user: userDecorator({
-        id,
-        name,
-        email
-      })
-=======
     const userDecorator = (user)=>{
       return {
         id: user.id,
@@ -61,7 +53,6 @@ export const createUser = async (req, res) => {
     res.status(201).json({
       message: "Usuario creado correctamente",
       user: userDecorator(user)
->>>>>>> origin/main
     });
 
   } catch (error) {
@@ -83,15 +74,12 @@ export const login = async (req, res) => {
         message: "El correo y la contraseña son obligatorios"
       });
     }
-<<<<<<< HEAD
-=======
     
     if(!isValidEmail(email)){
       return res.status(400).json({
         message: "El correo electrónico no es válido"
       });
     }
->>>>>>> origin/main
 
     const [users] = await pool.query(
       `SELECT id, name, email, password
@@ -126,7 +114,7 @@ export const login = async (req, res) => {
       },
       process.env.JWT_SECRET,
       {
-        expiresIn: "1 hora"
+        expiresIn: "1h"
       }
     );
 
@@ -143,7 +131,6 @@ export const login = async (req, res) => {
       message: "Error interno del servidor"
     });
   }
-<<<<<<< HEAD
 };
 
 export const getProfile = async (req, res) => {
@@ -174,6 +161,4 @@ export const getProfile = async (req, res) => {
       message: "Error interno del servidor"
     });
   }
-=======
->>>>>>> origin/main
 };

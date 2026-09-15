@@ -14,12 +14,8 @@ const getTaskTags = async (taskId) => {
 
 export const index = async (req, res) => {
   try {
-<<<<<<< HEAD
     const userId = req.user.user ? req.user.user.id : req.user.id;
     const [tasks] = await pool.query('SELECT * FROM tasks WHERE user_id = ? ORDER BY created_at DESC', [userId]);
-=======
-    const [tasks] = await pool.query('SELECT * FROM tasks ORDER BY created_at DESC');
->>>>>>> origin/main
 
     if (tasks.length === 0) {
       return res.status(200).json({ tasks: [] });
@@ -71,19 +67,11 @@ export const index = async (req, res) => {
 
 export const store = async (req, res) => {
   try {
-<<<<<<< HEAD
     const { title,  description, status, category_id, tags } = req.body;
     const userId = req.user.user ? req.user.user.id : req.user.id;
     if (!title || !category_id) {
       return res.status(400).json({
         message: "El titulo, categoria_id son obligatorios"
-=======
-    const { title,  description, status, category_id, user_id, tags } = req.body;
-
-    if (!title || !category_id || !user_id) {
-      return res.status(400).json({
-        message: "El titulo, categoria_id y el user_id son obligatorios"
->>>>>>> origin/main
       });
     }
 
@@ -92,11 +80,7 @@ export const store = async (req, res) => {
 
    await pool.query(
       'INSERT INTO tasks (id, title, description, status, category_id, user_id) VALUES (?, ?, ?, ?, ?, ?)',
-<<<<<<< HEAD
       [newTaskId, title, description || null, taskStatus, category_id, userId]
-=======
-      [newTaskId, title, description || null, taskStatus, category_id, user_id]
->>>>>>> origin/main
     );
 
     if (Array.isArray(tags) && tags.length > 0) {
@@ -122,10 +106,7 @@ export const store = async (req, res) => {
 export const show = async (req, res) => {
   try {
     const { id } = req.params;
-<<<<<<< HEAD
     const userId = req.user.user ? req.user.user.id : req.user.id;
-=======
->>>>>>> origin/main
 
     if (!isValidId(id)) {
       return res
@@ -134,13 +115,8 @@ export const show = async (req, res) => {
     }
 
     const [rows] = await pool.query(
-<<<<<<< HEAD
-      'SELECT * FROM tasks WHERE id = ? AND user_id = ? ORDER BY name ASC',
+      'SELECT * FROM tasks WHERE id = ? AND user_id = ?',
       [id, userId]
-=======
-      'SELECT * FROM tasks WHERE id = ? ORDER BY name ASC',
-      [id]
->>>>>>> origin/main
     );
 
     const task = rows[0];
@@ -164,27 +140,17 @@ export const show = async (req, res) => {
 export const update = async (req, res) => {
   try {
     const { id } = req.params;
-<<<<<<< HEAD
     const { title, description, status, category_id, tags } = req.body;
     const userId = req.user.user ? req.user.user.id : req.user.id;
-=======
-    const { title, description, status, category_id, user_id } = req.body;
-
->>>>>>> origin/main
     if (!isValidId(id)) {
       return res.status(400).json({ message: 'Identificador de tarea no válido' });
     }
 
-<<<<<<< HEAD
     const [existing] = await pool.query('SELECT * FROM tasks WHERE id = ? AND user_id = ?', [id, userId]);
-=======
-    const [existing] = await pool.query('SELECT * FROM tasks WHERE id = ?', [id]);
->>>>>>> origin/main
     if (existing.length === 0) {
       return res.status(404).json({ message: 'Tarea no encontrada' });
     }
 
-<<<<<<< HEAD
     if (!title || !category_id) {
       return res.status(400).json({ message: 'Título y categoría requeridos' });
     }
@@ -192,15 +158,6 @@ export const update = async (req, res) => {
     await pool.query(
       'UPDATE tasks SET title = ?, description = ?, status = ?, category_id = ?, user_id = ? WHERE id = ? and user_id = ?',
       [title, description || null, status || existing[0].status, category_id, userId, id, userId]
-=======
-    if (!title || !category_id || !user_id) {
-      return res.status(400).json({ message: 'Título, categoría y usuario requeridos' });
-    }
-
-    await pool.query(
-      'UPDATE tasks SET title = ?, description = ?, status = ?, category_id = ?, user_id = ? WHERE id = ?',
-      [title, description || null, status || existing[0].status, category_id, user_id, id]
->>>>>>> origin/main
     );
 
      if (Array.isArray(tags)) {
@@ -226,20 +183,13 @@ export const update = async (req, res) => {
 export const destroy = async (req, res) => {
    try {
     const { id } = req.params;
-<<<<<<< HEAD
     const userId = req.user.user ? req.user.user.id : req.user.id;
-=======
->>>>>>> origin/main
 
     if (!isValidId(id)) {
       return res.status(400).json({ message: 'Identificador de tarea no válido' });
     }
 
-<<<<<<< HEAD
     const [existing] = await pool.query('SELECT * FROM tasks WHERE id = ? AND user_id = ?', [id, userId]);
-=======
-    const [existing] = await pool.query('SELECT * FROM tasks WHERE id = ?', [id]);
->>>>>>> origin/main
     if (existing.length === 0) {
       return res.status(404).json({ message: 'Tarea no encontrada' });
     }
@@ -247,11 +197,7 @@ export const destroy = async (req, res) => {
     const [categoryRows] = await pool.query('SELECT * FROM categories WHERE id = ?', [task.category_id]);
     const tags = await getTaskTags(id);
     const deletedTaskData = taskDecorator(task, categoryRows[0] || null, tags);
-<<<<<<< HEAD
     await pool.query('DELETE FROM tasks WHERE id = ? AND user_id = ?', [id, userId]);
-=======
-    await pool.query('DELETE FROM tasks WHERE id = ?', [id]);
->>>>>>> origin/main
 
     return res.status(200).json({
       task: deletedTaskData

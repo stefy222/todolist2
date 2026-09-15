@@ -6,11 +6,11 @@ import { authMiddleware } from "../middlewares/auth.middleware.js";
 const router = express.Router();
 router.use(authMiddleware);
 
-router.post("/",index)
+router.get("/",index)
 
 router.post("/",store);
 
-router.get("/",show);
+router.get("/:id",show);
 
 router.put("/:id", update);
 
