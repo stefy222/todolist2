@@ -5,14 +5,15 @@ import {index,store,show,update,destroy } from "../controllers/category.controll
 import { authMiddleware } from "../middlewares/auth.middleware.js";
 const router = express.Router();
 router.use(authMiddleware);
-router.post("/categories",index)
 
-router.post("/categories",store);
+router.post("/",index)
 
-router.get("/categories",show);
+router.post("/",store);
 
-router.put("/categories/:id", update);
+router.get("/",show);
 
-router.delete("/categories/:id", destroy);
+router.put("/:id", update);
+
+router.delete("/:id", destroy);
 
 export default router;

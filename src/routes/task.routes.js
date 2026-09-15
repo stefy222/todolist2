@@ -6,14 +6,15 @@ import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 router.use(authMiddleware);
-router.post("/task",index)
 
-router.post("/task",store);
+router.post("/",index)
 
-router.get("/task",show);
+router.post("/",store);
 
-router.put("/task/:id", update);
+router.get("/",show);
 
-router.delete("/task/:id", destroy);
+router.put("/:id", update);
+
+router.delete("/:id", destroy);
 
 export default router;
