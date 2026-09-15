@@ -41,6 +41,7 @@ export const createUser = async (req, res) => {
       [id, name, email, hashedPassword]
     );
 
+<<<<<<< HEAD
     res.status(201).json({
       message: "Usuario creado correctamente",
       user: userDecorator({
@@ -48,6 +49,19 @@ export const createUser = async (req, res) => {
         name,
         email
       })
+=======
+    const userDecorator = (user)=>{
+      return {
+        id: user.id,
+        name: user.name,
+        email: user.email
+      };
+    }
+
+    res.status(201).json({
+      message: "Usuario creado correctamente",
+      user: userDecorator(user)
+>>>>>>> origin/main
     });
 
   } catch (error) {
@@ -69,6 +83,15 @@ export const login = async (req, res) => {
         message: "El correo y la contraseña son obligatorios"
       });
     }
+<<<<<<< HEAD
+=======
+    
+    if(!isValidEmail(email)){
+      return res.status(400).json({
+        message: "El correo electrónico no es válido"
+      });
+    }
+>>>>>>> origin/main
 
     const [users] = await pool.query(
       `SELECT id, name, email, password
@@ -120,6 +143,7 @@ export const login = async (req, res) => {
       message: "Error interno del servidor"
     });
   }
+<<<<<<< HEAD
 };
 
 export const getProfile = async (req, res) => {
@@ -150,4 +174,6 @@ export const getProfile = async (req, res) => {
       message: "Error interno del servidor"
     });
   }
+=======
+>>>>>>> origin/main
 };

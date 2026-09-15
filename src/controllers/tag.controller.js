@@ -5,9 +5,14 @@ import {isValidId} from "../utils/validators.js"
 
 export const index = async (req, res) => {
   try {
+<<<<<<< HEAD
     const userId = req.user.user ? req.user.user.id : req.user.id;  
     const [rows] = await pool.query
     ('SELECT * FROM tags WHERE user_id = ? ORDER BY created_at DESC', [userId]);
+=======
+    const [rows] = await pool.query
+    ('SELECT * FROM tags ORDER BY created_at DESC');
+>>>>>>> origin/main
     return res.status(200).json({
       tags: tagsListDecorator(rows)
     });
@@ -19,12 +24,20 @@ export const index = async (req, res) => {
 
 export const store = async (req, res) => {
   try {
+<<<<<<< HEAD
     const { name } = req.body;
     const userId = req.user.user ? req.user.user.id : req.user.id;
 
     if (!name) {
       return res.status(400).json({
         message: "El nombre es obligatorio"
+=======
+    const { name, user_id } = req.body;
+
+    if (!name || !user_id) {
+      return res.status(400).json({
+        message: "El nombre y el user_id son obligatorios"
+>>>>>>> origin/main
       });
     }
 
@@ -32,7 +45,11 @@ export const store = async (req, res) => {
 
    await pool.query(
       'INSERT INTO tags (id, name, user_id) VALUES (?, ?, ?)',
+<<<<<<< HEAD
       [id, name, userId]
+=======
+      [id, name, user_id]
+>>>>>>> origin/main
     );
 
     const [rows] = await pool.query(
@@ -57,7 +74,10 @@ export const store = async (req, res) => {
 export const show = async (req, res) => {
   try {
     const { id } = req.params;
+<<<<<<< HEAD
     const userId = req.user.user ? req.user.user.id : req.user.id;
+=======
+>>>>>>> origin/main
 
     if (!isValidId(id)) {
       return res
@@ -66,8 +86,13 @@ export const show = async (req, res) => {
     }
 
     const [rows] = await pool.query(
+<<<<<<< HEAD
       'SELECT * FROM tags WHERE id = ? AND user_id = ? ORDER BY name ASC',
       [id,userId]
+=======
+      'SELECT * FROM tags WHERE user_id = ? ORDER BY name ASC',
+      [id]
+>>>>>>> origin/main
     );
 
     return res.status(200).json({
@@ -88,7 +113,10 @@ export const update = async (req, res) => {
   try {
     const { id } = req.params;
     const { name } = req.body;
+<<<<<<< HEAD
     const userId = req.user.user ? req.user.user.id : req.user.id;
+=======
+>>>>>>> origin/main
 
     if (!isValidId(id)) {
       return res.status(400).json({ message: 'Identificador de etiqueta no válido' });
@@ -99,7 +127,11 @@ export const update = async (req, res) => {
     }
 
     const [result] = await pool.query(
+<<<<<<< HEAD
       'UPDATE tags SET name = ? WHERE id = ? AND user_id = ?', [name, id, userId]
+=======
+      'UPDATE tags SET name = ? WHERE id = ?', [name, id]
+>>>>>>> origin/main
     );
 
     if (result.affectedRows === 0) {
@@ -109,7 +141,11 @@ export const update = async (req, res) => {
     }
 
     const [rows] = await pool.query(
+<<<<<<< HEAD
       'SELECT * FROM tags WHERE id = ? AND user_id = ?', [id, userId]
+=======
+      'SELECT * FROM tags WHERE id = ?', [id]
+>>>>>>> origin/main
     );
 
     return res.status(200).json({
@@ -130,15 +166,23 @@ export const update = async (req, res) => {
 export const destroy = async (req, res) => {
   try {
     const { id } = req.params;
+<<<<<<< HEAD
     const userId = req.user.user ? req.user.user.id : req.user.id;
+=======
+>>>>>>> origin/main
 
     if (!isValidId(id)) {
       return res.status(400).json({ message: 'Identificador de etiqueta no válido' });
     }
 
     const [result] = await pool.query(
+<<<<<<< HEAD
       'DELETE FROM tags WHERE id = ? AND user_id = ?',
       [id, userId]
+=======
+      'DELETE FROM tags WHERE id = ?',
+      [id]
+>>>>>>> origin/main
     );
 
     if (result.affectedRows === 0) {

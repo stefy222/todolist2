@@ -5,14 +5,15 @@ import { authMiddleware } from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 router.use(authMiddleware);
-router.post("/tags",index)
 
-router.post("/tags",store);
+router.post("/",index)
 
-router.get("/tags",show);
+router.post("/",store);
 
-router.put("/tags/:id", update);
+router.get("/",show);
 
-router.delete("/tags/:id", destroy);
+router.put("/:id", update);
+
+router.delete("/:id", destroy);
 
 export default router;

@@ -33,7 +33,7 @@ const startServer = async () => {
   await dbConnection();
 
   app.listen(PORT, () => {
-    console.log('Servidor iniciado en http://localhost:${PORT}');
+    console.log(`Servidor iniciado en http://localhost:${PORT}`);
   });
 };
 
