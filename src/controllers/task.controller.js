@@ -15,10 +15,27 @@ const getTaskTags = async (taskId) => {
 export const index = async (req, res) => {
   try {
     const userId = req.user.user ? req.user.user.id : req.user.id;
-    const [tasks] = await pool.query('SELECT * FROM tasks WHERE user_id = ? ORDER BY created_at DESC', [userId]);
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10; 
+    const offset = (page - 1) * limit; 
+
+    const [countRows] = await pool.query(
+      'SELECT COUNT(*) as total FROM tasks WHERE user_id = ?',
+      [userId]
+    );
+    const totalItems = countRows[0].total; 
+    const totalPages = Math.ceil(totalItems / limit);
+
+    const [tasks] = await pool.query(
+      'SELECT * FROM tasks WHERE user_id = ? ORDER BY created_at DESC LIMIT ? OFFSET ?', 
+      [userId, limit, offset] 
+    );
 
     if (tasks.length === 0) {
-      return res.status(200).json({ tasks: [] });
+      return res.status(200).json({ 
+        tasks: [],
+        pagination: { totalItems, totalPages, currentPage: page, itemsPerPage: limit }
+      });
     }
 
     const categoryIds = [...new Set(tasks.map((t) => t.category_id).filter(Boolean))];
@@ -55,8 +72,17 @@ export const index = async (req, res) => {
       const tags = tagsByTaskId[task.id] || [];
       return taskDecorator(task, category, tags);
     });
-        
-    return res.status(200).json({ tasks: formattedTasks });
+    return res.status(200).json({ 
+      tasks: formattedTasks,
+      pagination: {
+        totalItems,
+        totalPages,
+        currentPage: page,
+        itemsPerPage: limit,
+        hasNextPage: page < totalPages,
+        hasPrevPage: page > 1
+      }
+    });
 
   } catch (error) {
     console.error('Error al listar tareas:', error.message);

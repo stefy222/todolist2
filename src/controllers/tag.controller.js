@@ -6,11 +6,31 @@ import {isValidId} from "../utils/validators.js"
 export const index = async (req, res) => {
   try {
     const userId = req.user.user ? req.user.user.id : req.user.id;  
+    const page = parseInt(req.query.page) || 1;
+    const limit = 10; 
+    const offset = (page - 1) * limit; 
+
+    const [countRows] = await pool.query(
+      'SELECT COUNT(*) as total FROM tags WHERE user_id = ?',
+      [userId]
+    );
+    const totalItems = countRows[0].total;
+    const totalPages = Math.ceil(totalItems / limit);
+
     const [rows] = await pool.query
-    ('SELECT * FROM tags WHERE user_id = ? ORDER BY created_at DESC', [userId]);
+    ('SELECT * FROM tags WHERE user_id = ? ORDER BY created_at DESC', [userId,limit,offset]);
+    
     return res.status(200).json({
-      tags: tagsListDecorator(rows)
-    });
+          categories: tagsListDecorator(rows),
+          pagination: {
+            totalItems,
+            totalPages,
+            currentPage: page,
+            itemsPerPage: limit,
+            hasNextPage: page < totalPages,
+            hasPrevPage: page > 1
+          }
+    })
   } catch (error) {
     console.error('Error al listar etiquetas:', error.message);
     return res.status(500).json({ message: 'Error interno del servidor' });
